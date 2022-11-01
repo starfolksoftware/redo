@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace StarfolkSoftware\Redo;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Commands\SkeletonCommand;
+use StarfolkSoftware\Redo\Commands\RedoCommand;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class RedoServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -16,10 +16,10 @@ class SkeletonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('skeleton')
+            ->name('redo')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_skeleton_table')
-            ->hasCommand(SkeletonCommand::class);
+            ->hasMigration('create_redo_table')
+            ->hasCommand(RedoCommand::class);
     }
 }

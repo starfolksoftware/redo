@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace StarfolkSoftware\Redo\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class RedoCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'redo';
 
     public $description = 'My command';
 
