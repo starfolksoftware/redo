@@ -4,7 +4,7 @@ namespace StarfolkSoftware\Redo;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use StarfolkSoftware\Redo\Commands\RedoCommand;
+use StarfolkSoftware\Redo\Commands\InstallCommand;
 
 class RedoServiceProvider extends PackageServiceProvider
 {
@@ -16,10 +16,12 @@ class RedoServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('redo')
+            ->name('gauge')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_redo_table')
-            ->hasCommand(RedoCommand::class);
+            ->hasCommand(InstallCommand::class);
+
+        if (Redo::$runsMigrations) {
+            $package->hasMigration('create_redo_table');
+        }
     }
 }
