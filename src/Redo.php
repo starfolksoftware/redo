@@ -160,7 +160,7 @@ final class Redo
     }
 
     /**
-     * Configure Gauge to support soft delete.
+     * Configure Redo to support soft delete.
      *
      * @param  bool  $value
      * @return static

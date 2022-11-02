@@ -16,7 +16,7 @@ class RedoServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('gauge')
+            ->name('redo')
             ->hasConfigFile()
             ->hasCommand(InstallCommand::class);
 
