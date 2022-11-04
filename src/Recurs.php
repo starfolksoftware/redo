@@ -12,26 +12,24 @@ trait Recurs
      * @param  string  $frequency
      * @param  int  $interval
      * @param  \DateTime  $startsAt
-     * @param  \DateTime|int $ends
+     * @param  \DateTime|int|null $ends
      * @return void
      */
-    public function makeRecurrable(string $frequency, int $interval, \DateTime $startsAt, $ends)
+    public function makeRecurrable(string $frequency, int $interval, \DateTime $startsAt, $ends = null)
     {
         $recurrence = Redo::newRecurrenceModel();
 
-        $recurrence->recurrable_type = $this->getMorphClass();
-        $recurrence->recurrable_id = $this->id;
         $recurrence->frequency = $frequency;
         $recurrence->interval = $interval;
         $recurrence->starts_at = $startsAt;
 
         if ($ends instanceof \DateTime) {
             $recurrence->ends_at = $ends;
-        } else {
+        } elseif (is_int($ends)) {
             $recurrence->ends_after = $ends;
         }
 
-        $recurrence->save();
+        $this->recurrence()->save($recurrence);
     }
 
     /**
@@ -50,10 +48,10 @@ trait Recurs
      * @param  string  $frequency
      * @param  int  $interval
      * @param  \DateTime  $startsAt
-     * @param  \DateTime|int $ends
+     * @param  \DateTime|int|null $ends
      * @return void
      */
-    public function updateRecurrence(string $frequency, int $interval, \DateTime $startsAt, $ends)
+    public function updateRecurrence(string $frequency, int $interval, \DateTime $startsAt, $ends = null)
     {
         $data = [
             'frequency' => $frequency,
@@ -64,12 +62,12 @@ trait Recurs
         if ($ends instanceof \DateTime) {
             $data['ends_at'] = $ends;
             $data['ends_after'] = null;
-        } else {
+        } elseif (is_int($ends)) {
             $data['ends_after'] = $ends;
             $data['ends_at'] = null;
         }
         
-        $this->recurrence->update();
+        $this->recurrence->update($data);
     }
 
     /**
@@ -78,7 +76,7 @@ trait Recurs
      * @param bool $value
      * @return void
      */
-    public function pause(bool $value = true)
+    public function pauseRecurrence(bool $value = true)
     {
         $this->recurrence->update([
             'status' => $value ? 'paused' : 'active',
@@ -108,7 +106,7 @@ trait Recurs
             ->setFreq($this->recurrence->frequency)
             ->setInterval($this->recurrence->interval);
 
-        if (count($this->recurrence->days) > 0) {
+        if (count($this->recurrence->day ?? []) > 0) {
             $rule->setByDay($this->recurrence->days);
         }
         
@@ -144,6 +142,10 @@ trait Recurs
      */
     public function currentRecurrence()
     {
+        if (!$this->recurrenceIsActive()) {
+            return null;
+        }
+
         return $this->recurrences()->current()?->getStart();
     }
 
@@ -154,6 +156,10 @@ trait Recurs
      */
     public function nextRecurrence()
     {
+        if (!$this->recurrenceIsActive()) {
+            return null;
+        }
+
         return $this->recurrences()->next()?->getStart();
     }
 
@@ -174,6 +180,10 @@ trait Recurs
      */
     public function lastRecurrence()
     {
+        if (!$this->recurrenceIsActive()) {
+            return null;
+        }
+
         return $this->recurrences()->last()?->getStart();
     }
 }
