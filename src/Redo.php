@@ -187,8 +187,8 @@ final class Redo
 
     /**
      * Sets the timezone.
-     * 
-     * @param string $timezone
+     *
+     * @param  string  $timezone
      * @return static
      */
     public static function useTimezone(string $timezone)
