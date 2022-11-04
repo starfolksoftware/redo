@@ -28,22 +28,14 @@ abstract class Recurrence extends Model
     ];
 
     /**
-     * The attributes that should be dates.
-     *
-     * @var array<string, string>
-     */
-    protected $dates = [
-        'starts_at',
-        'ends_at',
-    ];
-
-    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
     protected $casts = [
         'days' => 'array',
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
     ];
 
     /**
