@@ -2,12 +2,12 @@
 
 namespace StarfolkSoftware\Gauge\Database\Factories;
 
-use App\Models\Review;
+use App\Models\Recurrence;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ReviewFactory extends Factory
+class RecurrenceFactory extends Factory
 {
-    protected $model = Review::class;
+    protected $model = Recurrence::class;
 
     public function definition()
     {

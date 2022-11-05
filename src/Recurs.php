@@ -17,6 +17,8 @@ trait Recurs
      */
     public function makeRecurrable(string $frequency, int $interval, \DateTime $startsAt, $ends = null)
     {
+        $this->ensuresFrequencyIsSupported($frequency);
+
         $recurrence = Redo::newRecurrenceModel();
 
         $recurrence->frequency = $frequency;
@@ -53,6 +55,8 @@ trait Recurs
      */
     public function updateRecurrence(string $frequency, int $interval, \DateTime $startsAt, $ends = null)
     {
+        $this->ensuresFrequencyIsSupported($frequency);
+
         $data = [
             'frequency' => $frequency,
             'interval' => $interval,
@@ -90,7 +94,11 @@ trait Recurs
      */
     public function recurrenceIsActive(): bool
     {
-        return $this->recurrence->status === 'active';
+        return $this->recurrence->status === 'active' && (
+            (!is_null($this->recurrence->ends_at) && ($this->recurrence->ends_at > now())) ||
+            (!is_null($this->recurrence->ends_after) && $this->nextRecurrence()) ||
+            (is_null($this->recurrence->ends_at) && is_null($this->recurrence->ends_after))
+        );
     }
 
     /**
@@ -156,10 +164,6 @@ trait Recurs
      */
     public function nextRecurrence()
     {
-        if (! $this->recurrenceIsActive()) {
-            return null;
-        }
-
         return $this->recurrences()->next()?->getStart();
     }
 
@@ -180,10 +184,20 @@ trait Recurs
      */
     public function lastRecurrence()
     {
-        if (! $this->recurrenceIsActive()) {
-            return null;
-        }
-
         return $this->recurrences()->last()?->getStart();
+    }
+
+    /**
+     * Ensure provided frequency is supported.
+     * 
+     * @param string $frequency
+     * @return void
+     * @throws \Exception
+     */
+    public function ensuresFrequencyIsSupported(string $frequency)
+    {
+        if (!FrequencyEnum::tryFrom($frequency)) {
+            throw new \Exception("{$frequency} is not supported by Redo(recurrence package)");
+        }
     }
 }

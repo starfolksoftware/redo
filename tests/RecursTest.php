@@ -15,6 +15,7 @@ test('recurrence can be added to a recurrable model', function () {
         frequency: 'DAILY',
         interval: 1,
         startsAt: $startsAt,
+        ends: 10
     );
 
     expect($task->fresh()->recurrence()->count())->toBe(1);
@@ -67,6 +68,7 @@ test('recurrence can be paused', function () {
         frequency: 'DAILY',
         interval: 1,
         startsAt: $startsAt,
+        ends: 10
     );
 
     $task->pauseRecurrence();
