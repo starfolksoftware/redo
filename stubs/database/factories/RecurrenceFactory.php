@@ -1,22 +1,24 @@
 <?php
 
-namespace StarfolkSoftware\Gauge\Database\Factories;
+namespace Database\Factories;
 
-use App\Models\Recurrence;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Recurrence>
+ */
 class RecurrenceFactory extends Factory
 {
-    protected $model = Recurrence::class;
-
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
     public function definition()
     {
         return [
-            'team_id' => 1,
-            'recurrable_type' => 'App\\Models\\Task',
-            'recurrable_id' => 1,
             'frequency' => 'DAILY',
-            'starts_at' => now(),
+            'starts_at' => now()->addHour(),
         ];
     }
 }

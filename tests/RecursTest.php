@@ -9,7 +9,7 @@ test('recurrence can be added to a recurrable model', function () {
 
     $task = Task::forceCreate(['title' => 'Task 1']);
 
-    $startsAt = now();
+    $startsAt = now()->addHour();
 
     $task->makeRecurrable(
         frequency: 'DAILY',
@@ -34,7 +34,7 @@ test('recurrence can be updated', function () {
 
     $task = Task::forceCreate(['title' => 'Task 1']);
 
-    $startsAt = now();
+    $startsAt = now()->addHour();
 
     $task->makeRecurrable(
         frequency: 'DAILY',
@@ -62,7 +62,7 @@ test('recurrence can be paused', function () {
 
     $task = Task::forceCreate(['title' => 'Task 1']);
 
-    $startsAt = now();
+    $startsAt = now()->addHour();
 
     $task->makeRecurrable(
         frequency: 'DAILY',

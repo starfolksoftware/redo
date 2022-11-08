@@ -94,11 +94,12 @@ trait Recurs
      */
     public function recurrenceIsActive(): bool
     {
-        return $this->recurrence->status === 'active' && (
-            (!is_null($this->recurrence->ends_at) && ($this->recurrence->ends_at > now())) ||
-            (!is_null($this->recurrence->ends_after) && $this->nextRecurrence()) ||
-            (is_null($this->recurrence->ends_at) && is_null($this->recurrence->ends_after))
-        );
+        return ($this->recurrence?->starts_at >= now()) &&
+            $this->recurrence?->status === 'active' && (
+                (! is_null($this->recurrence->ends_at) && ($this->recurrence->ends_at >= now())) ||
+                (! is_null($this->recurrence->ends_after) && $this->nextRecurrence()) ||
+                (is_null($this->recurrence->ends_at) && is_null($this->recurrence->ends_after))
+            );
     }
 
     /**
@@ -189,14 +190,15 @@ trait Recurs
 
     /**
      * Ensure provided frequency is supported.
-     * 
-     * @param string $frequency
+     *
+     * @param  string  $frequency
      * @return void
+     *
      * @throws \Exception
      */
     public function ensuresFrequencyIsSupported(string $frequency)
     {
-        if (!FrequencyEnum::tryFrom($frequency)) {
+        if (! FrequencyEnum::tryFrom($frequency)) {
             throw new \Exception("{$frequency} is not supported by Redo(recurrence package)");
         }
     }
