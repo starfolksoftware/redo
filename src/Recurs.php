@@ -94,8 +94,8 @@ trait Recurs
      */
     public function recurrenceIsActive(): bool
     {
-        return $this->recurrence?->status === 'active' && 
-            !!$this->nextRecurrence();
+        return $this->recurrence?->status === 'active' &&
+            (bool) $this->nextRecurrence();
     }
 
     /**
