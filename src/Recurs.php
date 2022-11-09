@@ -94,12 +94,8 @@ trait Recurs
      */
     public function recurrenceIsActive(): bool
     {
-        return ($this->recurrence?->starts_at >= now()) &&
-            $this->recurrence?->status === 'active' && (
-                (! is_null($this->recurrence->ends_at) && ($this->recurrence->ends_at >= now())) ||
-                (! is_null($this->recurrence->ends_after) && $this->nextRecurrence()) ||
-                (is_null($this->recurrence->ends_at) && is_null($this->recurrence->ends_after))
-            );
+        return $this->recurrence?->status === 'active' && 
+            !!$this->nextRecurrence();
     }
 
     /**
