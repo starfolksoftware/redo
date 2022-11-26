@@ -4,9 +4,6 @@ use StarfolkSoftware\Redo\Redo;
 use StarfolkSoftware\Redo\Tests\Mocks\Recurrence;
 use StarfolkSoftware\Redo\Tests\Mocks\Task;
 
-use function Pest\Laravel\travel;
-use function Pest\Laravel\travelTo;
-
 test('recurrence can be added to a recurrable model', function () {
     Redo::useRecurrenceModel(Recurrence::class);
 
