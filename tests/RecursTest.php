@@ -4,6 +4,9 @@ use StarfolkSoftware\Redo\Redo;
 use StarfolkSoftware\Redo\Tests\Mocks\Recurrence;
 use StarfolkSoftware\Redo\Tests\Mocks\Task;
 
+use function Pest\Laravel\travel;
+use function Pest\Laravel\travelTo;
+
 test('recurrence can be added to a recurrable model', function () {
     Redo::useRecurrenceModel(Recurrence::class);
 
@@ -23,7 +26,6 @@ test('recurrence can be added to a recurrable model', function () {
         ->frequency->toBe('DAILY')
         ->interval->toBe(1);
     expect($task->recurrenceIsActive())->toBeTrue();
-    expect($task->currentRecurrence())->toBeInstanceOf(\DateTime::class);
     expect($task->nextRecurrence())->toBeInstanceOf(\DateTime::class);
     expect($task->firstRecurrence())->toBeInstanceOf(\DateTime::class);
     expect($task->lastRecurrence())->toBeInstanceOf(\DateTime::class);
@@ -73,9 +75,9 @@ test('recurrence can be paused', function () {
 
     $task->pauseRecurrence();
 
-    expect($task->currentRecurrence())->toBeNull();
+    expect($task->nextRecurrence())->toBeNull();
 
     $task->pauseRecurrence(false);
 
-    expect($task->currentRecurrence())->toBeInstanceOf(\DateTime::class);
+    expect($task->nextRecurrence())->toBeInstanceOf(\DateTime::class);
 });

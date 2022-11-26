@@ -94,8 +94,7 @@ trait Recurs
      */
     public function recurrenceIsActive(): bool
     {
-        return $this->recurrence?->status === 'active' &&
-            (bool) $this->nextRecurrence();
+        return $this->recurrence?->status === 'active';
     }
 
     /**
@@ -141,27 +140,20 @@ trait Recurs
     }
 
     /**
-     * Returns current recurrence.
-     *
-     * @return mixed
-     */
-    public function currentRecurrence()
-    {
-        if (! $this->recurrenceIsActive()) {
-            return null;
-        }
-
-        return $this->recurrences()->current()?->getStart();
-    }
-
-    /**
      * Returns the next recurrence.
      *
      * @return mixed
      */
     public function nextRecurrence()
     {
-        return $this->recurrences()->next()?->getStart();
+        if (! $this->recurrenceIsActive()) {
+            return null;
+        }
+
+        return $this->recurrences()
+            ->startsAfter(now(), true)
+            ->first()
+            ?->getStart();
     }
 
     /**
